@@ -71,7 +71,7 @@ class MainController extends Controller {
 		$c = $this->helpers->categories;
 		$signals = $this->helpers->signals;
 		$users = $this->helpers->adminGetUsers();
-    	return view('admin.users',compact(['users','user','c','signals']));
+    	return view('users',compact(['users','user','c','signals']));
     }	
     
     /**
@@ -95,7 +95,7 @@ class MainController extends Controller {
          $c = $this->helpers->categories;
          $signals = $this->helpers->signals;
 		$account = $this->helpers->getUser($em); 
-    	return view('admin.user',compact(['account','user','c','signals']));
+    	return view('user',compact(['account','user','c','signals']));
 		}
 		else
         {
@@ -145,7 +145,7 @@ class MainController extends Controller {
          	#$req["user_id"] = $user->id; 
              $this->helpers->updateUser($req);
 	        session()->flash("cobra-user-status","ok");
-			return redirect()->intended('cobra-users');
+			return redirect()->intended('users');
          }        
     }
     
@@ -232,7 +232,7 @@ class MainController extends Controller {
         
 		$c = $this->helpers->categories;
 		#$deals = $this->helpers->adminGetDeals();
-    	return view('admin.add-deal',compact(['user','c']));
+    	return view('add-deal',compact(['user','c']));
     }
     
        /**
@@ -278,7 +278,7 @@ class MainController extends Controller {
          	#$req["user_id"] = $user->id; 
              $this->helpers->updateDeal($req);
 	        session()->flash("cobra-deal-status","ok");
-			return redirect()->intended('cobra-deals');
+			return redirect()->intended('deals');
          }        
     }
     
@@ -323,7 +323,7 @@ class MainController extends Controller {
          	#$req["user_id"] = $user->id; 
              $this->helpers->createDeal($req);
 	        session()->flash("add-deal-status","ok");
-			return redirect()->intended('cobra-deals');
+			return redirect()->intended('deals');
          }        
     }
 	

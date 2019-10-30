@@ -1,30 +1,15 @@
 @extends('layout')
 
-@section('title',"View Deal")
+@section('title',"Add Deal")
 
 @section('content')
 
         <!-- row -->
         <div class="row tm-content-row">
-          <div class="tm-block-col tm-col-avatar">
-            <div class="tm-bg-primary-dark tm-block tm-block-avatar">
-              <h2 class="tm-block-title">Images</h2>
-              <div class="tm-avatar-container">
-                <img
-                  src="img/lgg.png"
-                  alt="{{$deal['name']}}"
-                  class="tm-avatar img-fluid mb-4"
-                />
-                <a href="#" class="tm-avatar-delete-link">
-                  <i class="far fa-trash-alt tm-product-delete-icon"></i>
-                </a>
-              </div>
-            </div>
-          </div>
           <div class="tm-block-col tm-col-account-settings">
             <div class="tm-bg-primary-dark tm-block tm-block-settings">
-              <h2 class="tm-block-title">View/Edit Deal</h2>
-              <form action="{{url('deal')}}" method="post" class="tm-signup-form row">
+              <h2 class="tm-block-title">Add a new deal to the system</h2>
+              <form action="{{url('add-deal')}}" method="post" class="tm-signup-form row">
 			     {{csrf_field()}}
 
                 <div class="form-group col-lg-6">
