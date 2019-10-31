@@ -10,32 +10,35 @@
 			   <div class="col-12 tm-block-col">
                     <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
                         <h2 class="tm-block-title">View, edit or remove coupons</h2>
-						<a href="{{url('cobra-add-coupon')}}" class="btn btn-primary btn-block text-uppercase">Add new coupon</a><br>
+						<a href="{{url('add-coupon')}}" class="btn btn-primary btn-block text-uppercase">Add new coupon</a><br>
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col">NAME</th>
-                                    <th scope="col">PHONE</th>
-                                    <th scope="col">EMAIL</th>                                    
-                                    <th scope="col">ROLE</th>                                    
+                                    <th scope="col">COUPON</th>
+                                    <th scope="col">DISCOUNT</th>                                   
                                     <th scope="col">STATUS</th>                                    
                                     <th scope="col">ACTIONS</th>                                    
                                 </tr>
                             </thead>
                             <tbody>
-							  @foreach($users as $u)
+							  @if($coupons != null && count($coupons) > 0)
+                              @foreach($coupons as $c)
+				         <?php
+                          $viewURL = url('coupon').'?&xf='.$c['id']; 
+                          $deleteURL = url("delete-coupon")."?xf=".$c['id'];
+                         ?>
                                 <tr>
-                                    <th scope="row"><b>{{$u['fname']." ".$u['lname']}}</b></th>
                                     
-                                    <td><b>{{$u['phone']}}</b></td>
-                                    <td><b>{{$u['email']}}</b></td>
-                                    <td><b>{{$u['role']}}</b></td>
-                                    <td><b>{{$u['status']}} </b></td>
+                                    <td><b> {{$c['code']}}</b></td>
+                                    <td><b> {{$c['discount']}}%</b></td>
+                                    <td><b>{{$c['status']}}</b></td>
                                     <td>
-									<a href="{{url('user').'?email='.$u['email']}}" class="tm-product-delete-link"><i class="far fa-eye tm-product-delete-icon"></i></a>
+									<a href="{{$viewURL}}" class="tm-product-delete-link"><i class="far fa-eye tm-product-delete-icon"></i></a>
+									<a href="{{$deleteURL}}" class="tm-product-delete-link"><i class="far fa-trash-alt tm-product-delete-icon"></i></a>
 									</td>
                                 </tr>
                                 @endforeach
+								@endif
                             </tbody>
                         </table>
                     </div>

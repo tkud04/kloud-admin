@@ -44,6 +44,7 @@ Interface HelperContract
         public function updateBlogPost($data);
         public function updateComment($data);
         public function updateCoupon($data);
+        public function deleteCoupon($data);
         public function getUser($email);
         public function updateUser($data);
         public function updateProfile($user, $data);

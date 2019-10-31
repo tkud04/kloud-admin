@@ -1177,7 +1177,7 @@ class MainController extends Controller {
         }
         
 		$c = $this->helpers->categories;
-    	return view('admin.add-coupon',compact(['user','c']));
+    	return view('add-coupon',compact(['user','c']));
     }
     
     public function postAddCoupon(Request $request)
@@ -1212,7 +1212,7 @@ class MainController extends Controller {
          	#$req["user_id"] = $user->id; 
              $this->helpers->createCoupon($req);
 	        session()->flash("add-coupon-status","ok");
-			return redirect()->intended('cobra-coupons');
+			return redirect()->intended('coupons');
          }        
     }
 
@@ -1250,7 +1250,7 @@ class MainController extends Controller {
          {             
 			 $c = $this->helpers->categories;
 		     $coupon = $this->helpers->adminGetCoupon($req['xf']);
-         	return view('admin.coupon',compact(['user','c','coupon']));
+         	return view('coupon',compact(['user','c','coupon']));
          }        
     }	
     
@@ -1293,7 +1293,47 @@ class MainController extends Controller {
          	#$req["user_id"] = $user->id; 
              $ret = $this->helpers->updateCoupon($req);
 	        session()->flash("cobra-coupon-status",$ret);
-			return redirect()->intended('cobra-coupons');
+			return redirect()->intended('coupons');
+         }        
+    }
+
+	/**
+	 * Show the application welcome screen to the user.
+	 *
+	 * @return Response
+	 */
+    public function getDeleteCoupon(Request $request)
+    {
+    	if(Auth::check())
+		{
+			$user = Auth::user();
+            if(!$this->helpers->isAdmin($user)) return redirect()->intended('dashboard');		
+		}
+		else
+        {
+        	return redirect()->intended('login?return=dashboard');
+        }
+        
+        $req = $request->all();
+        //dd($req);
+        
+        $validator = Validator::make($req, [
+                             'xf' => 'required',
+         ]);
+         
+         if($validator->fails())
+         {
+             $messages = $validator->messages();
+             return redirect()->back()->withInput()->with('errors',$messages);
+             //dd($messages);
+         }
+         
+         else
+         {
+         	#$req["user_id"] = $user->id; 
+             $ret = $this->helpers->deleteCoupon($req);
+	        session()->flash("delete-coupon-status",$ret);
+			return redirect()->intended('coupons');
          }        
     }
     
@@ -1319,7 +1359,7 @@ class MainController extends Controller {
 		$c = $this->helpers->categories;
 		$signals = $this->helpers->signals;
 		$coupons = $this->helpers->adminGetCoupons();
-    	return view('admin.coupons',compact(['user','coupons','c','signals']));
+    	return view('coupons',compact(['user','coupons','c','signals']));
     }
 
 	/**
@@ -1344,7 +1384,7 @@ class MainController extends Controller {
 		$c = $this->helpers->categories;
 		$signals = $this->helpers->signals;
 		$comments = $this->helpers->adminGetComments();
-    	return view('admin.comments',compact(['user','c','comments','signals']));
+    	return view('comments',compact(['user','c','comments','signals']));
     }
 	/**
 	 * Show the application welcome screen to the user.

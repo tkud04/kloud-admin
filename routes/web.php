@@ -76,7 +76,10 @@ Route::get('add-coupon', 'MainController@getAddCoupon');
 Route::post('add-coupon', 'MainController@postAddCoupon');
 
 Route::get('coupon', 'MainController@getCoupon');
+Route::post('coupon', 'MainController@postCoupon');
+
 Route::get('coupons', 'MainController@getCoupons');
+Route::get('delete-coupon', 'MainController@getDeleteCoupon');
 
 Route::get('rc', 'MainController@getRC');
 Route::get('rating', 'MainController@getRating');

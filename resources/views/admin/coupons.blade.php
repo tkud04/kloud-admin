@@ -44,7 +44,7 @@
 						  {{$c['discount']}}%
                           </td>
                           <td class="text-success">
-                          {{$r['status']}}
+                          {{$c['status']}}
                           </td>
                           <td>
                            <a class="btn btn-success" href="{{$viewURL}}">View</a>

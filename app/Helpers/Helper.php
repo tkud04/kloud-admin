@@ -123,6 +123,7 @@ class Helper implements HelperContract
                      "update-store-status" => "Store info updated!",
                      "cobra-store-status" => "Store info updated!",
                      "add-coupon-status" => "Coupon added!",
+                     "delete-coupon-status" => "Coupon deleted.",
                      "rate-deal-status" => "Thank you for your input!",
                      "no-bid-status" => "Insufficient funds to place bid. Please make a deposit and try again.",
                      "bid-status" => "Bid has been placed.",
@@ -1042,6 +1043,23 @@ $subject = $data['subject'];
                                               'discount' => $data['discount'],
                                               'status' => $data['status'],
                                            ]);
+                                           
+                                           $ret = "ok";
+                        }                                    
+               }                                 
+                  return $ret;                               
+           }
+		   function deleteCoupon($data)
+           {  
+              $ret = 'error'; 
+         
+              if(isset($data['xf']))
+               {
+               	$c = Coupons::where('id', $data['xf'])->first();
+                   
+                        if($c != null)
+                        {                       
+                        	$c->delete();
                                            
                                            $ret = "ok";
                         }                                    
