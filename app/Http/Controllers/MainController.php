@@ -1155,7 +1155,7 @@ class MainController extends Controller {
 		$signals = $this->helpers->signals;
 		$ratings = $this->helpers->adminGetRatings();
 		$comments = $this->helpers->adminGetComments();
-    	return view('admin.rc',compact(['user','c','signals','ratings','comments']));
+    	return view('rc',compact(['user','c','signals','ratings','comments']));
     }
 	
 	/**
@@ -1421,7 +1421,7 @@ class MainController extends Controller {
          {             
 			 $c = $this->helpers->categories;
 		     $comment = $this->helpers->adminGetComment($req['id']);
-         	return view('admin.comment',compact(['user','c','comment']));
+         	return view('comment',compact(['user','c','comment']));
          }      
     }
     
@@ -1463,7 +1463,7 @@ class MainController extends Controller {
          	#$req["user_id"] = $user->id; 
              $ret = $this->helpers->updateComment($req);
 	        session()->flash("cobra-comment-status",$ret);
-			return redirect()->intended('cobra-comments');
+			return redirect()->intended('comments');
          }        
     }
     
@@ -1569,7 +1569,7 @@ class MainController extends Controller {
          	#$req["user_id"] = $user->id; 
              $ret = $this->helpers->approveRating($req);
 	        session()->flash("cobra-approve-rating-status",$ret);
-			return redirect()->intended('cobra-rc');
+			return redirect()->intended('rc');
          }        
     }
     
