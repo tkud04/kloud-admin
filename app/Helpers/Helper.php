@@ -1689,7 +1689,7 @@ $subject = $data['subject'];
 		   
 		   function getHighestBidder($id)
            {
-			 $ret = "no";
+			 $ret = null;
 			 
            	$hb = Bids::where('auction_id',$id)->max('amount');
            
@@ -2025,7 +2025,7 @@ function adminGetOrder($number)
                        
                        #get highest bidder
                      	$hb = $this->getHighestBidder($a->id);
-                       #dd($hb);
+                      # dd($hb);
                        if($hb != null) 
                        {                   
 					     

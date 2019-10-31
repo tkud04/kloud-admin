@@ -602,7 +602,7 @@ class MainController extends Controller {
 		$c = $this->helpers->categories;
 		$signals = $this->helpers->signals;
 		$auctions = $this->helpers->adminGetAuctions();
-    	return view('admin.auctions',compact(['user','c','signals','auctions']));
+    	return view('auctions',compact(['user','c','signals','auctions']));
     }
     
     /**
@@ -781,9 +781,9 @@ class MainController extends Controller {
          else
          {
              #$req["uid"] = $user->id; 
-             $ret = $this->helpers->adminEndAuction($req);
+             $ret = $this->helpers->adminEndAuction($req['xf'], "bid");
 	        session()->flash("cobra-end-auction-status",$ret);
-			return redirect()->intended('cobra-auctions');
+			return redirect()->intended('auctions');
          }           	
     }
     
@@ -825,7 +825,7 @@ class MainController extends Controller {
              #$req["uid"] = $user->id; 
              $ret = $this->helpers->deleteAuction($user, $req['xf']);
 	        session()->flash("delete-auction-status",$ret);
-			return redirect()->intended('cobra-auctions');
+			return redirect()->intended('auctions');
          }           	
     }
     
