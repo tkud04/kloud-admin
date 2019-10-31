@@ -1025,7 +1025,7 @@ class MainController extends Controller {
         
 		$c = $this->helpers->categories;
 		$invoice = null; 
-    	return view('admin.invoice',compact(['user','c','invoice']));
+    	return view('invoice',compact(['user','c','invoice']));
     }
 
 
@@ -1051,7 +1051,7 @@ class MainController extends Controller {
 		$c = $this->helpers->categories;
 		$signals = $this->helpers->signals;
 		$orders = $this->helpers->adminGetOrders(); 
-    	return view('admin.orders',compact(['user','c','signals','orders']));
+    	return view('orders',compact(['user','c','signals','orders']));
     }
     
     /**
@@ -1085,7 +1085,7 @@ class MainController extends Controller {
             }
 		$c = $this->helpers->categories;
 		$order = $this->helpers->adminGetOrder($req['on']); 
-    	return view('admin.order',compact(['user','c','order']));
+    	return view('order',compact(['user','c','order']));
     }
     
     /**
