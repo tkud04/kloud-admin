@@ -529,7 +529,7 @@ class MainController extends Controller {
             $em = (isset($req['xf'])) ? $req['xf'] : ""; 
 		    $c = $this->helpers->categories;
 		   
-       	return view('admin.fund-wallet',compact(['user','c','em']));	
+       	return view('fund-wallet',compact(['user','c','em']));	
 		}
 		else
         {
@@ -576,7 +576,7 @@ class MainController extends Controller {
          	$req["email"] = $req["xf"]; 
              $this->helpers->fundWallet($req);
 	        session()->flash("fund-wallet-status","ok");
-			return redirect()->intended('cobra-users');
+			return redirect()->intended('users');
          }        
     }
     
