@@ -13,6 +13,14 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- https://getbootstrap.com/ -->
     <link rel="stylesheet" href="css/templatemo-style.css">
+	
+	 <!-- kojo editor -->
+	<link rel="stylesheet" href="lib/kojo/style.css"> <!-- Core -->
+    
+	@yield('styles')
+	
+	@yield('pickr')
+
 </head>
 
 <body id="@yield('body-id')">
@@ -161,6 +169,12 @@
 
     <script src="js/jquery-3.3.1.min.js"></script>
     <!-- https://jquery.com/download/ -->
+	
+	 <!-- Kojo editor -->
+  <script src="lib/kojo/helpers.js"></script>
+       @yield('kojo')
+  <script src="lib/kojo/main.js"></script>
+  
     <script src="js/moment.min.js"></script>
     <!-- https://momentjs.com/ -->
     <script src="js/Chart.min.js"></script>

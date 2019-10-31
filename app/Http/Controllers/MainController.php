@@ -852,7 +852,7 @@ class MainController extends Controller {
 		$signals = $this->helpers->signals;
 		$stores = $this->helpers->getStores();
         #dd($stores);
-		return view('admin.stores',compact(['user','c','stores','signals']));
+		return view('stores',compact(['user','c','stores','signals']));
     }
     
     /**
@@ -894,7 +894,7 @@ class MainController extends Controller {
 			return redirect()->intended('cobra-stores');
 		}
 		else{
-		  return view('admin.store',compact(['user','c','store','signals']));
+		  return view('store',compact(['user','c','store','signals']));
 		}
 		
     }
@@ -924,6 +924,7 @@ class MainController extends Controller {
                              'ird' => 'required',
                              'dri' => 'required',
                              'name' => 'required',
+                             'pickup_address' => 'required',
                              'flink' => 'required',
                              'description' => 'required',
                              'status' => 'required'
@@ -941,7 +942,7 @@ class MainController extends Controller {
 			 $req['id'] = $req['dri'];
              $r = $this->helpers->updateStore($req);
 	        session()->flash("cobra-store-status",$r);
-			return redirect()->intended('cobra-stores');
+			return redirect()->intended('stores');
          }        
     }
     

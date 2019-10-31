@@ -15,8 +15,12 @@
 $ct = (isset($category) && $category != null) ? " - ".$category : ""; 
 $deals = (isset($store["deals"])) ? $store["deals"] : [];
 
-$img = "https://res.cloudinary.com/kloudtransact/image/upload/v1563645033/uploads/".$store['img'];
- if($store['img'] == "none") $img = "https://via.placeholder.com/150";
+$ird = $store['img'];
+
+if(count($ird) < 1 || $ird == "none") { $imgg = "img/no-image.png"; }
+else{                                      	
+    $imgg = "https://res.cloudinary.com/kloudtransact/image/upload/v1563645033/uploads/".$ird;                                        
+}
 ?>
     <div class="content">
         <div class="container-fluid">
