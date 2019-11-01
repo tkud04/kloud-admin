@@ -106,8 +106,8 @@
                                 </span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{url('ws')}}">Sliders</a>
-                                <a class="dropdown-item" href="{{url('ads')}}">Ads</a>
+                                <a class="dropdown-item" href="{{url('ss')}}">Sliders</a>
+                                <a class="dropdown-item" href="{{url('aa')}}">Ads</a>
                                 <a class="dropdown-item" href="{{url('be')}}">Configuration</a>
                             </div>
                         </li>					

@@ -1595,7 +1595,7 @@ class MainController extends Controller {
 		$c = $this->helpers->categories;
 		$config = $this->helpers->getSiteConfig();
 		$signals = $this->helpers->signals;
-    	return view('admin.site-settings',compact(['user','c','config','signals']));
+    	return view('be',compact(['user','c','config','signals']));
     }
     
     /**
@@ -1620,11 +1620,7 @@ class MainController extends Controller {
         
         $validator = Validator::make($req, [
                              'delivery' => 'required',
-							 'bid' => 'required',
-							'withdrawal' => 'required',
-							'transfer' => 'required',
-							'ird' => 'required',
-							'irdc' => 'required'
+							'withdrawal' => 'required'
          ]);
          
          if($validator->fails())
@@ -1639,7 +1635,73 @@ class MainController extends Controller {
          	#$req["user_id"] = $user->id; 
              $ret = $this->helpers->updateSiteConfig($req);
 	        session()->flash("cobra-settings-status",$ret);
-			return redirect()->intended('cobra-be');
+			return redirect()->intended('be');
+         }        
+    }
+	
+	/**
+	 * Show the application welcome screen to the user.
+	 *
+	 * @return Response
+	 */
+	public function getSliders()
+    {
+       $user = null;
+		
+		if(Auth::check())
+		{
+			$user = Auth::user();
+            if(!$this->helpers->isAdmin($user)) return redirect()->intended('dashboard');		
+		}
+		else
+        {
+        	return redirect()->intended('login?return=dashboard');
+        }
+        
+		$c = $this->helpers->categories;
+		$config = $this->helpers->getSiteConfig();
+		$signals = $this->helpers->signals;
+    	return view('be',compact(['user','c','config','signals']));
+    }
+    
+    /**
+	 * Show the application welcome screen to the user.
+	 *
+	 * @return Response
+	 */
+    public function postSliders(Request $request)
+    {
+    	if(Auth::check())
+		{
+			$user = Auth::user();
+            if(!$this->helpers->isAdmin($user)) return redirect()->intended('dashboard');		
+		}
+		else
+        {
+        	return redirect()->intended('login?return=dashboard');
+        }
+        
+        $req = $request->all();
+        //dd($req);
+        
+        $validator = Validator::make($req, [
+                             'delivery' => 'required',
+							'withdrawal' => 'required'
+         ]);
+         
+         if($validator->fails())
+         {
+             $messages = $validator->messages();
+             return redirect()->back()->withInput()->with('errors',$messages);
+             //dd($messages);
+         }
+         
+         else
+         {
+         	#$req["user_id"] = $user->id; 
+             $ret = $this->helpers->updateSiteConfig($req);
+	        session()->flash("cobra-settings-status",$ret);
+			return redirect()->intended('be');
          }        
     }
     

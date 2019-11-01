@@ -50,6 +50,10 @@ Route::get('delete-store', 'MainController@getDeleteStore');
 
 Route::get('be', 'MainController@getSiteConfig');
 Route::post('be', 'MainController@postSiteConfig');
+Route::get('ss', 'MainController@getSliders');
+Route::post('ss', 'MainController@postSliders');
+Route::get('aa', 'MainController@getAds');
+Route::post('aa', 'MainController@postAds');
 
 Route::get('auctions', 'MainController@getAuctions');
 Route::get('auction', 'MainController@getAuction');
