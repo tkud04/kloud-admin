@@ -25,6 +25,8 @@ use App\Coupons;
 use App\Orders;
 use App\OrderDetails;
 use App\Settings;
+use App\Sliders;
+use App\Ads;
 use App\Withdrawals;
 use App\BlogPosts;
 use App\Stores;
