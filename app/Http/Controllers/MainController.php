@@ -1838,7 +1838,92 @@ class MainController extends Controller {
 			 $req["cta"] = $req["cta-text"].",".$req["cta-url"]; 
              $this->helpers->createAd($req);
 	        session()->flash("add-ad-status","ok");
-			return redirect()->intended('ads');
+			return redirect()->intended('aa');
+         }        
+    }
+	
+	/**
+	 * Show the application welcome screen to the user.
+	 *
+	 * @return Response
+	 */
+	public function getAd(Request $request)
+    {
+       $user = null;
+		
+		if(Auth::check())
+		{
+			$user = Auth::user();
+            if(!$this->helpers->isAdmin($user)) return redirect()->intended('dashboard');		
+		}
+		else
+        {
+        	return redirect()->intended('login?return=dashboard');
+        }
+        
+        $req = $request->all();
+		$validator = Validator::make($req, [
+                             'id' => 'required|numeric'
+         ]);
+         
+         if($validator->fails())
+         {
+             #$messages = $validator->messages();
+             return redirect()->intended('cobra-comments');
+         }
+         
+         else
+         {             
+			 $c = $this->helpers->categories;
+		     $comment = $this->helpers->adminGetComment($req['id']);
+         	return view('comment',compact(['user','c','comment']));
+         }      
+    }
+    
+    public function getDeleteAd(Request $request)
+    {
+    	if(Auth::check())
+		{
+			$user = Auth::user();
+            if(!$this->helpers->isAdmin($user)) return redirect()->intended('dashboard');		
+		}
+		else
+        {
+        	return redirect()->intended('login?return=dashboard');
+        }
+        
+        $req = $request->all();
+        //dd($req);
+        
+        $validator = Validator::make($req, [
+                             'img' => 'required|file',
+                             'subtitle' => 'required',
+                             'title' => 'required',
+                             'cta-text' => 'required',
+                             'cta-url' => 'required',
+                             'tag' => 'required',
+                             'type' => 'required'
+         ]);
+         
+         if($validator->fails())
+         {
+             $messages = $validator->messages();
+             return redirect()->back()->withInput()->with('errors',$messages);
+             //dd($messages);
+         }
+         
+         else
+         {
+			 //upload ad image
+             $img = $request->file('img');       
+             $ret = $this->helpers->uploadCloudImage($img->getRealPath());
+			 $req["img"] = $ret['public_id'];
+             
+			 $req["copy"] = ""; 
+			 $req["cta"] = $req["cta-text"].",".$req["cta-url"]; 
+             $this->helpers->createAd($req);
+	        session()->flash("add-ad-status","ok");
+			return redirect()->intended('aa');
          }        
     }
 	

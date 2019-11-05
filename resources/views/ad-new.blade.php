@@ -53,7 +53,7 @@
                     class="form-control validate"
                   />
                 </div><div class="form-group col-lg-6">
-                  <label for="phone">Call to action URL e.g stores/my-store OR http://website.com</label>
+                  <label for="phone">Call to action URL e.g http://www.kloudtransact.com/deals OR http://website.com</label>
                   <input
                     id="phone"
 					name="cta-url"
