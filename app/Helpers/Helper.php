@@ -3126,7 +3126,15 @@ function adminGetOrder($number)
               if($d != null && ($d->user_id == $user->id || $this->isSuperAdmin($user)))
                {
 				 DealData::where('sku',$d->sku)->delete();
-				 DealImages::where('sku',$d->sku)->delete();
+				 $imgs = DealImages::where('sku',$d->sku)->get();
+				if($imgs != null)
+                {
+                	foreach($imgs as $i)
+                    {
+                    	$this->deleteCloudImage($i->url); 
+                        $i->delete();
+                    }
+               }
 				Carts::where('sku',$d->sku)->delete();
 				 $auctions = Auctions::where('deal_id',$d->id)->get();
 				
@@ -3191,6 +3199,7 @@ function adminGetOrder($number)
                      }
                  }
                  
+                 $this->deleteCloudImage($s->img); 
                  $s->delete(); 
 				 $user->update(['verified' => "user"]);
 				 $ret = "ok";    
@@ -3217,6 +3226,7 @@ function adminGetOrder($number)
                      }
                  }
                  
+                 $this->deleteCloudImage($s->img); 
                  $s->delete(); 
 				 $u->update(['verified' => "user"]);
 				 $ret = "ok";    
@@ -3603,32 +3613,7 @@ function adminGetOrder($number)
                   return "ok";
 		   }
 
-        	public function getSliders()
-	{
-		$s = [   
-					 ['id' => "1",
-	                  'title' => "New Arrivals",
-	                  'category' => "denim jackets",
-	                  'date' => date("jS F, Y h:i A"),
-					  'brief' => "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum sus-pendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. ",
-	                  'content' => "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum sus-pendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. ",
-	                  'img' => "img/bg.jpg",         
-                      'price' => "15000",         
-	                 ],      
-					 ['id' => "2",
-	                  'title' => "New Arrivals",
-	                  'category' => "denim jackets",
-	                  'date' => date("jS F, Y h:i A"),
-					  'brief' => "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum sus-pendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. ",
-	                  'content' => "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum sus-pendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. ",
-	                  'img' => "img/bg-2.jpg",         
-                      'price' => "24000",                     
-	                 ],   
-	               
-    	
-	];
-		return $s;
-	}
+        	
 
    function getCategories()
     {
@@ -3715,7 +3700,8 @@ function adminGetOrder($number)
                 return $ret;
            }
 		   
-		 /**  function getSliders($type)
+		 
+           function getSliders($type)
            {
            	$ret = [];
 			$sliders = null;
@@ -3750,7 +3736,7 @@ function adminGetOrder($number)
                 }       
                 return $ret;
            }
-           **/
+           
            
 }
 ?>
