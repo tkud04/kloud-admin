@@ -27,31 +27,33 @@
                                 </tr>
                             </thead>
                             <tbody>
-							  @if($ads != null && count($ads) > 0)
-                              @foreach($ads as $a)
+							  @if($sliders != null && count($sliders) > 0)
+                              @foreach($sliders as $s)
 				         <?php
-                         $ird = $a['img'];
+                         $ird = $s['img'];
 
-                                      if(count($ird) < 1 || $ird == "none") { $imgg = "img/no-image.png"; }
+                                      if($ird == null || $ird == "none") { $img = "img/no-image.png"; }
                                       else{                                      	
-                                      	   $imgg = "https://res.cloudinary.com/kloudtransact/image/upload/v1563645033/".$ird;                                        
+                                      	   $img = "https://res.cloudinary.com/kloudtransact/image/upload/v1563645033/".$ird;                                        
 										}
 										
-										$cta = explode(',',$a['cta']);
-										$ctaText = $cta[0]; $ctaUrl = $cta[1];
+										$cta_1 = explode(',',$s['cta_1']);
+										$cta_2 = explode(',',$s['cta_2']);
 										
-										 $options = ['home' => "Displays on home page ONLY",'footer' => "Displays on footer page ONLY",'all' => "Displays everywhere"];
+										 $options = ['first' => "Displays first when home page loads",'last' => "Displays last when home page loads",'random' => "Displays randomly"];
 									  
-                          $deleteURL = url("delete-ad")."?xf=".$a['id'];
+                          $deleteURL = url("delete-slider")."?xf=".$s['id'];
                          ?>
                                 <tr>
                                     
-                                    <td><img src="{{$imgg}}" width="229" height="51" alt="{{$a['title']}}"></td>
-                                    <td><b> {{$a['subtitle']}}</b></td>
-                                    <td><b>{{$a['title']}}</b></td>
-                                    <td><b>{{$ctaText}}</b></td>
-                                    <td><a href="{{$ctaUrl}}" target="_blank">{{$ctaUrl}}</b></td>
-                                    <td><b>{{$options[$a['type']]}}</b></td>
+                                    <td><img src="{{$img}}" width="192" height="72" alt="{{$s['title']}}"></td>
+                                    <td><b> {{$s['subtitle']}}</b></td>
+                                    <td><b>{{$s['title']}}</b></td>
+                                    <td><b>{{$cta_1[0]}}</b></td>
+                                    <td><a href="{{$cta_1[1]}}" target="_blank">{{$cta_1[1]}}</b></td>
+                                    <td><b>{{$cta_2[0]}}</b></td>
+                                    <td><a href="{{$cta_2[1]}}" target="_blank">{{$cta_2[1]}}</b></td>
+                                    <td><b>{{$options[$s['type']]}}</b></td>
                                     <td>
 									<a href="{{$deleteURL}}" class="tm-product-delete-link"><i class="far fa-trash-alt tm-product-delete-icon"></i></a>
 									</td>
