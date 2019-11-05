@@ -5,7 +5,7 @@
 @section('kojo')
  <script>
     addEditor($(".kojo-control"),"eslider","description");
-	//$('#estore').html(`{!!$store['description']!!}`);
+	
 	$('#description').val(`<b>Enter offer card text here.</b>`);
   </script>
 @stop
