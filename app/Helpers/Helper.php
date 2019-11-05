@@ -3654,7 +3654,7 @@ function adminGetOrder($number)
            {
            	$ret = Sliders::create(['subtitle' => $data['subtitle'],                                                                                                          
                                                       'title' => $data['title'],
-                                                      'cta_1' => $data['cta_2'],                                                     
+                                                      'cta_1' => $data['cta_1'],                                                     
                                                       'cta_2' => $data['cta_2'],                                                     
                                                       'tag' => $data['tag'],
                                                       'copy' => $data['copy'],
