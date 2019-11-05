@@ -126,6 +126,8 @@ class Helper implements HelperContract
                      "cobra-store-status" => "Store info updated!",
                      "add-coupon-status" => "Coupon added!",
                      "add-ad-status" => "Ad created!",
+                     "delete-ad-status" => "Ad deleted .",
+                     "delete-slider-status" => "Slider deleted .",
                      "add-slider-status" => "Slider created!",
                      "rate-deal-status" => "Thank you for your input!",
                      "no-bid-status" => "Insufficient funds to place bid. Please make a deposit and try again.",
@@ -3734,6 +3736,37 @@ function adminGetOrder($number)
                       array_push($ret, $temp); 
                    }
                 }       
+                return $ret;
+           }
+           
+           
+           function deleteAd($id)
+           {
+           	$ret = "error";
+               $ad = Ads::where('id',$id)->first();
+ 
+              if($ad != null)
+               {
+				 $this->deleteCloudImage($ad->img); 
+				$ad->delete(); 
+				$ret = "ok";
+               }                          
+                                                      
+                return $ret;
+           }
+           
+           function deleteSlider($id)
+           {
+           	$ret = "error";
+               $s = Sliders::where('id',$id)->first();
+ 
+              if($s != null)
+               {
+				 $this->deleteCloudImage($s->img); 
+				$s->delete(); 
+				$ret = "ok";
+               }                          
+                                                      
                 return $ret;
            }
            
