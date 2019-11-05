@@ -53,6 +53,7 @@
                                     <td><a href="{{$cta_1[1]}}" target="_blank">{{$cta_1[1]}}</b></td>
                                     <td><b>{{$cta_2[0]}}</b></td>
                                     <td><a href="{{$cta_2[1]}}" target="_blank">{{$cta_2[1]}}</b></td>
+                                    <td><b>{{$s['copy']}}</b></td>
                                     <td><b>{{$options[$s['type']]}}</b></td>
                                     <td>
 									<a href="{{$deleteURL}}" class="tm-product-delete-link"><i class="far fa-trash-alt tm-product-delete-icon"></i></a>
