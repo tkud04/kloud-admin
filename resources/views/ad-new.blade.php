@@ -14,7 +14,7 @@
 			     {{csrf_field()}}
 
 				<div class="form-group col-lg-12">
-                  <label for="phone">Background Image</label>
+                  <label for="phone">Background Image (<b>Recommend dimension: 1145x225</b>)</label>
                   <input
                     id="phone"
                     name="img"

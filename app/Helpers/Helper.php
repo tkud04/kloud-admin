@@ -126,6 +126,7 @@ class Helper implements HelperContract
                      "cobra-store-status" => "Store info updated!",
                      "add-coupon-status" => "Coupon added!",
                      "add-ad-status" => "Ad created!",
+                     "add-slider-status" => "Slider created!",
                      "rate-deal-status" => "Thank you for your input!",
                      "no-bid-status" => "Insufficient funds to place bid. Please make a deposit and try again.",
                      "bid-status" => "Bid has been placed.",

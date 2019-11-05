@@ -9,7 +9,7 @@
 			
 			   <div class="col-12 tm-block-col">
                     <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
-                        <h2 class="tm-block-title">View, edit or remove ads on KloudTransact webasite</h2>
+                        <h2 class="tm-block-title">View/remove ads on KloudTransact webasite</h2>
 						<a href="{{url('ad-new')}}" class="btn btn-primary btn-block text-uppercase">Add new ad</a><br>
                         <table class="table">
                             <thead>
