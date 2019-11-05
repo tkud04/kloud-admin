@@ -1725,8 +1725,9 @@ class MainController extends Controller {
              $img = $request->file('img');       
              $ret = $this->helpers->uploadCloudImage($img->getRealPath());
 			 $req["img"] = $ret['public_id'];
-             
-			 $req["copy"] = ""; 
+             $copy = "";
+             if(isset($req["copy"])) $copy = $req["copy"]; 
+			 $req["copy"] = $copy; 
 			 $tag = "";
 			 if(isset($req["tag"])) $tag = $req["tag"]; 
 			else $req["tag"] = $tag;
