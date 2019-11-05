@@ -1664,12 +1664,31 @@ class MainController extends Controller {
     	return view('ss',compact(['user','c','sliders','signals']));
     }
     
+    
     /**
 	 * Show the application welcome screen to the user.
 	 *
 	 * @return Response
 	 */
-    public function postSliders(Request $request)
+	public function getNewSlider()
+    {
+       $user = null;
+		
+		if(Auth::check())
+		{
+			$user = Auth::user();
+            if(!$this->helpers->isAdmin($user)) return redirect()->intended('dashboard');		
+		}
+		else
+        {
+        	return redirect()->intended('login?return=dashboard');
+        }
+        
+		$c = $this->helpers->categories;
+    	return view('slider-new',compact(['user','c']));
+    }
+    
+    public function postNewSlider(Request $request)
     {
     	if(Auth::check())
 		{
@@ -1685,8 +1704,12 @@ class MainController extends Controller {
         //dd($req);
         
         $validator = Validator::make($req, [
-                             'delivery' => 'required',
-							'withdrawal' => 'required'
+                             'img' => 'required|file',
+                             'subtitle' => 'required',
+                             'title' => 'required',
+                             'cta-1-text' => 'required',
+                             'cta-1-url' => 'required',
+                             'type' => 'required'
          ]);
          
          if($validator->fails())
@@ -1698,12 +1721,64 @@ class MainController extends Controller {
          
          else
          {
-         	#$req["user_id"] = $user->id; 
-             $ret = $this->helpers->updateSiteConfig($req);
-	        session()->flash("cobra-settings-status",$ret);
-			return redirect()->intended('be');
+			 //upload ad image
+             $img = $request->file('img');       
+             $ret = $this->helpers->uploadCloudImage($img->getRealPath());
+			 $req["img"] = $ret['public_id'];
+             
+			 $req["copy"] = ""; 
+			 $tag = "";
+			 if(isset($req["tag"])) $tag = $req["tag"]; 
+			else $req["tag"] = $tag;
+			 $req["cta_1"] = $req["cta-1-text"].",".$req["cta-1-url"]; 
+			 $req["cta_2"] = "None,#"; 
+			if(isset($req["cta-2-text"]) && isset($req["cta-2-text"])) $req["cta_2"] = $req["cta-2-text"].",".$req["cta-2-url"]; 
+             $this->helpers->createSlider($req);
+	        session()->flash("add-slider-status","ok");
+			return redirect()->intended('ss');
          }        
     }
+	
+	/**
+	 * Show the application welcome screen to the user.
+	 *
+	 * @return Response
+	 */
+	public function getDeleteSlider(Request $request)
+    {
+       $user = null;
+		
+		if(Auth::check())
+		{
+			$user = Auth::user();
+            if(!$this->helpers->isAdmin($user)) return redirect()->intended('dashboard');		
+		}
+		else
+        {
+        	return redirect()->intended('login?return=dashboard');
+        }
+        
+        $req = $request->all();
+		$validator = Validator::make($req, [
+                             'xf' => 'required|numeric'
+         ]);
+         
+         if($validator->fails())
+         {
+             #$messages = $validator->messages();
+             return redirect()->intended('aa');
+         }
+         
+         else
+         {             
+			 $this->helpers->deleteAd($req['xf']);
+	        session()->flash("delete-ad-status","ok");
+			return redirect()->intended('aa');
+         }      
+    }
+    
+    
+    
 
 	/**
 	 * Show the application welcome screen to the user.
@@ -1730,47 +1805,7 @@ class MainController extends Controller {
     	return view('aa',compact(['user','c','ads','signals']));
     }
     
-    /**
-	 * Show the application welcome screen to the user.
-	 *
-	 * @return Response
-	 */
-    public function postAds(Request $request)
-    {
-    	if(Auth::check())
-		{
-			$user = Auth::user();
-            if(!$this->helpers->isAdmin($user)) return redirect()->intended('dashboard');		
-		}
-		else
-        {
-        	return redirect()->intended('login?return=dashboard');
-        }
-        
-        $req = $request->all();
-        //dd($req);
-        
-        $validator = Validator::make($req, [
-                             'delivery' => 'required',
-							'withdrawal' => 'required'
-         ]);
-         
-         if($validator->fails())
-         {
-             $messages = $validator->messages();
-             return redirect()->back()->withInput()->with('errors',$messages);
-             //dd($messages);
-         }
-         
-         else
-         {
-         	#$req["user_id"] = $user->id; 
-             $ret = $this->helpers->updateSiteConfig($req);
-	        session()->flash("cobra-settings-status",$ret);
-			return redirect()->intended('be');
-         }        
-    }
-	
+    
 	
 	/**
 	 * Show the application welcome screen to the user.
@@ -1847,7 +1882,7 @@ class MainController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function getAd(Request $request)
+	public function getDeleteAd(Request $request)
     {
        $user = null;
 		
@@ -1863,69 +1898,23 @@ class MainController extends Controller {
         
         $req = $request->all();
 		$validator = Validator::make($req, [
-                             'id' => 'required|numeric'
+                             'xf' => 'required|numeric'
          ]);
          
          if($validator->fails())
          {
              #$messages = $validator->messages();
-             return redirect()->intended('cobra-comments');
+             return redirect()->intended('aa');
          }
          
          else
          {             
-			 $c = $this->helpers->categories;
-		     $comment = $this->helpers->adminGetComment($req['id']);
-         	return view('comment',compact(['user','c','comment']));
+			 $this->helpers->deleteAd($req['xf']);
+	        session()->flash("delete-ad-status","ok");
+			return redirect()->intended('aa');
          }      
     }
     
-    public function getDeleteAd(Request $request)
-    {
-    	if(Auth::check())
-		{
-			$user = Auth::user();
-            if(!$this->helpers->isAdmin($user)) return redirect()->intended('dashboard');		
-		}
-		else
-        {
-        	return redirect()->intended('login?return=dashboard');
-        }
-        
-        $req = $request->all();
-        //dd($req);
-        
-        $validator = Validator::make($req, [
-                             'img' => 'required|file',
-                             'subtitle' => 'required',
-                             'title' => 'required',
-                             'cta-text' => 'required',
-                             'cta-url' => 'required',
-                             'tag' => 'required',
-                             'type' => 'required'
-         ]);
-         
-         if($validator->fails())
-         {
-             $messages = $validator->messages();
-             return redirect()->back()->withInput()->with('errors',$messages);
-             //dd($messages);
-         }
-         
-         else
-         {
-			 //upload ad image
-             $img = $request->file('img');       
-             $ret = $this->helpers->uploadCloudImage($img->getRealPath());
-			 $req["img"] = $ret['public_id'];
-             
-			 $req["copy"] = ""; 
-			 $req["cta"] = $req["cta-text"].",".$req["cta-url"]; 
-             $this->helpers->createAd($req);
-	        session()->flash("add-ad-status","ok");
-			return redirect()->intended('aa');
-         }        
-    }
 	
     
     
