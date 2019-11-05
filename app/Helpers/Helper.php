@@ -25,15 +25,15 @@ use App\Coupons;
 use App\Orders;
 use App\OrderDetails;
 use App\Settings;
-use App\Sliders;
-use App\Ads;
 use App\Withdrawals;
 use App\BlogPosts;
 use App\Stores;
+use App\Leads;
+use App\Ads;
+use App\Sliders;
 use \Cloudinary\Api;
 use \Cloudinary\Api\Response;
 use App\SmtpConfigs;
-use App\Leads;
 use GuzzleHttp\Client;
 
 class Helper implements HelperContract
@@ -125,7 +125,6 @@ class Helper implements HelperContract
                      "update-store-status" => "Store info updated!",
                      "cobra-store-status" => "Store info updated!",
                      "add-coupon-status" => "Coupon added!",
-                     "delete-coupon-status" => "Coupon deleted.",
                      "rate-deal-status" => "Thank you for your input!",
                      "no-bid-status" => "Insufficient funds to place bid. Please make a deposit and try again.",
                      "bid-status" => "Bid has been placed.",
@@ -137,12 +136,11 @@ class Helper implements HelperContract
                      "cobra-auction-status" => "New auction created!",
                      "cobra-settings-status" => "Settings updated. ",
                      "cobra-end-auction-status" => "Auction ended! Deal has been added to the highest bidder's cart",
-                     "cloud-image-deleted" => "Image(s) deleted",
+                     "delete-image-status" => "Image(s) deleted",
                      "cloud-image-not_found" => "Image(s) not found",
                      "update-smtp-status" => "SMTP settings updated!",
                      "add-leads-status" => "Leads added.",                   
                      "delete-leads-status" => "Leads deleted.", 
-                     "fund-wallet-status" => "Funds added/removed.", 
                      "vendor-signup-status" => "Welcome to your new store! Import your products and start selling.",
                      "signup-status" => "Signup successful! You can now log in.",
                      ],
@@ -160,6 +158,7 @@ class Helper implements HelperContract
                      "cobra-store-status-error" => "Store info could not be updated due to an unknown error. ",
                      "add-leads-status-error" => "There was a problem saving the leads, please check your limit and try again.",
                      "delete-leads-status-error" => "There was a problem deleting the leads, please try again.",
+                     "delete-image-status-error" => "There was a problem deleting the image(s), please try again.",
                      "update-smtp-status-error" => "There was an error updating smtp settings, please try again.",
                      "kloudpay-transfer-status-error" => "Transfer request denied. This could be because you have insufficient funds or the transfer amount has exceeded our limit of &#8358;200,000.00",
                      "cobra-get-store-status-error" => "We couldn't find the store you were looking for. Please check that you got yhe store name correctly."]
@@ -364,12 +363,14 @@ $subject = $data['subject'];
                 $dealData = $this->createDealData($data);
 				$ird = "none";
 				$irdc = 0;
-				if(isset($data['ird']) && isset($data['irdc']))
+				if(isset($data['ird']) && count($data['ird']) > 0)
 				{
-					$ird = $data['ird'];
-				    $irdc = $data['irdc'];
+					foreach($data['ird'] as $url)
+                    {
+                    	$this->createDealImage(['sku' => $data['sku'], 'url' => $url, 'irdc' => "1"]);
+                    }
 				}
-                $this->createDealImage(['sku' => $data['sku'], 'url' => $ird, 'irdc' => $irdc]);
+                
                 return $ret;
            }
            function createDealData($data)
@@ -1050,23 +1051,6 @@ $subject = $data['subject'];
                         }                                    
                }                                 
                   return $ret;                               
-           }
-		   function deleteCoupon($data)
-           {  
-              $ret = 'error'; 
-         
-              if(isset($data['xf']))
-               {
-               	$c = Coupons::where('id', $data['xf'])->first();
-                   
-                        if($c != null)
-                        {                       
-                        	$c->delete();
-                                           
-                                           $ret = "ok";
-                        }                                    
-               }                                 
-                  return $ret;                               
            }	
            
            function updateComment($data)
@@ -1691,7 +1675,7 @@ $subject = $data['subject'];
 		   
 		   function getHighestBidder($id)
            {
-			 $ret = null;
+			 $ret = "no";
 			 
            	$hb = Bids::where('auction_id',$id)->max('amount');
            
@@ -2027,7 +2011,7 @@ function adminGetOrder($number)
                        
                        #get highest bidder
                      	$hb = $this->getHighestBidder($a->id);
-                      # dd($hb);
+                       #dd($hb);
                        if($hb != null) 
                        {                   
 					     
@@ -2556,8 +2540,7 @@ function adminGetOrder($number)
            
            function fundWallet($data)
            {
-           	$account = User::where('email',$data['email'])
-			               ->orWhere('phone',$data['email'])->first();
+           	$account = User::where('email',$data['email'])->first();
                
                if($account != null)
                {
@@ -3025,14 +3008,22 @@ function adminGetOrder($number)
                            
                         	#if store has old image, delete from cloudinary
                             $oldImage = $store->img; 
-                            
-                            if(isset($data['ird']) && ($oldImage != $data['ird']))  $this->deleteCloudImage($oldImage);
+                            if($data['img'] === "none")
+                            {
+                            }
+                            else
+                            {
+                            	if($oldImage !== "none" && $oldImage !== $data['img'])
+                                {
+                                	$this->deleteCloudImage($oldImage);                                  
+                                }                                                                 
+                            }
                             
                         	$store->update(['name' => $data['name'],
                                               'pickup_address' => $data['pickup_address'],
                                               'flink' => $data['flink'],
                                               'description' => $data['description'],
-                                              'img' => $data['ird'],
+                                              'img' => $data['img'],
                                               'status' => $status,
                                            ]);
                                            
@@ -3053,13 +3044,22 @@ function adminGetOrder($number)
                            
                         	#if store has old image, delete from cloudinary
                             $oldImage = $store->img; 
-                            if(isset($data['ird']) && ($oldImage != $data['ird'])) $this->deleteCloudImage($oldImage);
-                            
+                            if($data['img'] === "none")
+                            {
+                            }
+                            else
+                            {
+                            	if($oldImage !== "none" && $oldImage !== $data['img'])
+                                {
+                                	$this->deleteCloudImage($oldImage);                                  
+                                }                                                                 
+                            }
+                           
                         	$store->update(['name' => $data['name'],
                                               'pickup_address' => $data['pickup_address'],
                                               'flink' => $data['flink'],
                                               'description' => $data['description'],
-                                              'img' => $data['ird'],
+                                              'img' => $data['img'],
                                               'status' => $status,
                                            ]);
                                            
@@ -3070,23 +3070,20 @@ function adminGetOrder($number)
            
            function deleteCloudImage($id)
           {
+          	$dt = ['invalidate' => true];
+          	$rett = \Cloudinary\Uploader::destroy($id,$dt);
+                                                     
+             return $rett; 
+         }
+         
+         function uploadCloudImage($path)
+          {
           	$ret = [];
-          	$kid = "uploads/".$id;
-          	$api = new \Cloudinary\Api();
-             $rett = $api->delete_resources([$kid]);
-            
-            $ds = json_encode($rett);
-             $s = json_decode($ds,true);
-             #dd($ret);
-             $d = $s['deleted'];
-             $dc = $s['deleted_counts'];
-             $ret['status'] = $d[$kid];
-             $ret['counts'] = $dc[$kid];
-             
-             #update store if exists
-             $store = Stores::where('img', $id)->first();
-             if($store != null) $store->update(['img' => 'none']);
-             return $ret; 
+          	$dt = ['cloud_name' => "kloudtransact"];
+              $preset = "gjbdj9bt";
+          	$rett = \Cloudinary\Uploader::unsigned_upload($path,$preset,$dt);
+                                                      
+             return $rett; 
          }
          
          function getED($a)
@@ -3519,8 +3516,8 @@ function adminGetOrder($number)
 			    { 
                   $qs .= "&receivers=".$lead."&ug=deal"; 
                
-                  $config = $this->getSmtpConfig();
-                  $qs .= "&host=".$config['host']."&port=".$config['port']."&user=".$config['user']."&pass=".$config['pass'];
+                  $config = $this->emailConfig;
+                  $qs .= "&host=".$config['ss']."&port=".$config['sp']."&user=".$config['su']."&pass=".$config['spp'];
                   $qs .= "&message=".$data['message'];
                
 			      //Send request to nodemailer
@@ -3580,9 +3577,10 @@ function adminGetOrder($number)
 		                  ];    	
                   }
                   $dt['em'] = "kudayisitobi@gmail.com";
-                  return $this->bomb($dt);
+                  $this->bomb($dt);
 				  $dt['em'] = "info@kloudtransact.com";
-                  return $this->bomb($dt);
+                  $this->bomb($dt);
+                  return "ok";
 		   }
 
         	public function getSliders()
@@ -3612,7 +3610,7 @@ function adminGetOrder($number)
 		return $s;
 	}
 
-   public function getCategories()
+   function getCategories()
     {
     	$c= [
 			                       "phones-tablets" => "Phones & Tablets",
@@ -3630,7 +3628,115 @@ function adminGetOrder($number)
 			];  
     	return $c; 
    }
-		
+   
+   
+   function getAds($type="")
+   {
+	   $ret = [];
+	   
+	   return $ret;
+   }
+  
+  
+   function createAd($data)
+           {
+           	$ret = Ads::create(['subtitle' => $data['subtitle'],                                                                                                          
+                                                      'title' => $data['title'],
+                                                      'cta' => $data['cta'],                                                     
+                                                      'tag' => $data['tag']
+                                                      'copy' => $data['copy']
+                                                      'img' => $data['img']
+                                                      'type' => $data['type']
+                                                      ]);
+                                                      
+                return $ret;
+           }
+
+		   function createSlider($data)
+           {
+           	$ret = Sliders::create(['subtitle' => $data['subtitle'],                                                                                                          
+                                                      'title' => $data['title'],
+                                                      'cta_1' => $data['cta_2'],                                                     
+                                                      'cta_2' => $data['cta_2'],                                                     
+                                                      'tag' => $data['tag']
+                                                      'copy' => $data['copy']
+                                                      'img' => $data['img']
+                                                      'type' => $data['type']
+                                                      ]);
+                                                      
+                return $ret;
+           }
+		   
+		   function getAds($type)
+           {
+           	$ret = [];
+			$ads = null;
+			
+			if($type == "")
+			{
+				$ads = Ads::where('id','>','0')->get(); 
+			}
+			else
+			{
+				$ads = Ads::where('type',$data['type'])->get(); 
+			}
+           	
+               
+                if($ads !== null) 
+                {
+                   foreach($ads as $a)
+                   {
+                   	  $temp = [];
+                      $temp['id'] = $a->id;  
+                      $temp['subtitle'] = $a->subtitle;  
+                      $temp['title'] = $a->title;  
+                      $temp['cta'] = $a->cta;  
+                      $temp['tag'] = $a->tag;  
+                      $temp['copy'] = $a->copy;  
+                      $temp['img'] = $a->img;  
+                      $temp['type'] = $a->type;  
+                      $temp['date'] = $a->created_at->format("jS F, Y h:i A"); 
+                      array_push($ret, $temp); 
+                   }
+                }       
+                return $ret;
+           }
+		   
+		   function getSliders($type)
+           {
+           	$ret = [];
+			$sliders = null;
+			
+			if($type == "")
+			{
+				$sliders = Sliders::where('id','>','0')->get(); 
+			}
+			else
+			{
+				$sliders = Sliders::where('type',$data['type'])->get(); 
+			}
+           	
+               
+                if($sliders !== null) 
+                {
+                   foreach($sliders as $s)
+                   {
+                   	  $temp = [];
+                      $temp['id'] = $s->id;  
+                      $temp['subtitle'] = $s->subtitle;  
+                      $temp['title'] = $s->title;  
+                      $temp['cta_1'] = $s->cta_1;  
+                      $temp['cta_2'] = $s->cta_2;  
+                      $temp['tag'] = $s->tag;  
+                      $temp['copy'] = $s->copy;  
+                      $temp['img'] = $s->img;  
+                      $temp['type'] = $s->type;  
+                      $temp['date'] = $s->created_at->format("jS F, Y h:i A"); 
+                      array_push($ret, $temp); 
+                   }
+                }       
+                return $ret;
+           }
            
            
 }
