@@ -1771,9 +1771,9 @@ class MainController extends Controller {
          
          else
          {             
-			 $this->helpers->deleteAd($req['xf']);
-	        session()->flash("delete-ad-status","ok");
-			return redirect()->intended('aa');
+			 $this->helpers->deleteSlider($req['xf']);
+	        session()->flash("delete-slider-status","ok");
+			return redirect()->intended('ss');
          }      
     }
     
