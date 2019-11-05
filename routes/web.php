@@ -54,6 +54,14 @@ Route::get('ss', 'MainController@getSliders');
 Route::post('ss', 'MainController@postSliders');
 Route::get('aa', 'MainController@getAds');
 Route::post('aa', 'MainController@postAds');
+Route::get('ad-new', 'MainController@getNewAd');
+Route::post('ad-new', 'MainController@postNewAd');
+Route::get('slider-new', 'MainController@getNewSlider');
+Route::post('slider-new', 'MainController@postNewSlider');
+Route::get('ad', 'MainController@getAd');
+Route::post('ad', 'MainController@postAd');
+Route::get('slider', 'MainController@getSlider');
+Route::post('slider', 'MainController@postSlider');
 
 Route::get('auctions', 'MainController@getAuctions');
 Route::get('auction', 'MainController@getAuction');

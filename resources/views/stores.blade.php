@@ -30,7 +30,7 @@
 
                                       if(count($ird) < 1 || $ird == "none") { $imgg = "img/no-image.png"; }
                                       else{                                      	
-                                      	   $imgg = "https://res.cloudinary.com/kloudtransact/image/upload/v1563645033/uploads/".$ird;                                        
+                                      	   $imgg = "https://res.cloudinary.com/kloudtransact/image/upload/v1563645033/".$ird;                                        
 										}
 									  
                          $flink = $s['flink'];

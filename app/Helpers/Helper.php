@@ -125,6 +125,7 @@ class Helper implements HelperContract
                      "update-store-status" => "Store info updated!",
                      "cobra-store-status" => "Store info updated!",
                      "add-coupon-status" => "Coupon added!",
+                     "add-ad-status" => "Ad created!",
                      "rate-deal-status" => "Thank you for your input!",
                      "no-bid-status" => "Insufficient funds to place bid. Please make a deposit and try again.",
                      "bid-status" => "Bid has been placed.",
@@ -1046,6 +1047,24 @@ $subject = $data['subject'];
                                               'discount' => $data['discount'],
                                               'status' => $data['status'],
                                            ]);
+                                           
+                                           $ret = "ok";
+                        }                                    
+               }                                 
+                  return $ret;                               
+           }	
+		   
+		   function deleteCoupon($data)
+           {  
+              $ret = 'error'; 
+         
+              if(isset($data['xf']))
+               {
+               	$c = Coupons::where('id', $data['xf'])->first();
+                   
+                        if($c != null)
+                        {                       
+                        	$c->delete();
                                            
                                            $ret = "ok";
                         }                                    
@@ -3629,13 +3648,6 @@ function adminGetOrder($number)
     	return $c; 
    }
    
-   
-   function getAds($type="")
-   {
-	   $ret = [];
-	   
-	   return $ret;
-   }
   
   
    function createAd($data)
@@ -3643,9 +3655,9 @@ function adminGetOrder($number)
            	$ret = Ads::create(['subtitle' => $data['subtitle'],                                                                                                          
                                                       'title' => $data['title'],
                                                       'cta' => $data['cta'],                                                     
-                                                      'tag' => $data['tag']
-                                                      'copy' => $data['copy']
-                                                      'img' => $data['img']
+                                                      'tag' => $data['tag'],
+                                                      'copy' => $data['copy'],
+                                                      'img' => $data['img'],
                                                       'type' => $data['type']
                                                       ]);
                                                       
@@ -3658,16 +3670,16 @@ function adminGetOrder($number)
                                                       'title' => $data['title'],
                                                       'cta_1' => $data['cta_2'],                                                     
                                                       'cta_2' => $data['cta_2'],                                                     
-                                                      'tag' => $data['tag']
-                                                      'copy' => $data['copy']
-                                                      'img' => $data['img']
+                                                      'tag' => $data['tag'],
+                                                      'copy' => $data['copy'],
+                                                      'img' => $data['img'],
                                                       'type' => $data['type']
                                                       ]);
                                                       
                 return $ret;
            }
 		   
-		   function getAds($type)
+		   function getAds($type="")
            {
            	$ret = [];
 			$ads = null;
@@ -3702,7 +3714,7 @@ function adminGetOrder($number)
                 return $ret;
            }
 		   
-		   function getSliders($type)
+		 /**  function getSliders($type)
            {
            	$ret = [];
 			$sliders = null;
@@ -3737,7 +3749,7 @@ function adminGetOrder($number)
                 }       
                 return $ret;
            }
-           
+           **/
            
 }
 ?>

@@ -1659,9 +1659,9 @@ class MainController extends Controller {
         }
         
 		$c = $this->helpers->categories;
-		$config = $this->helpers->getSiteConfig();
+		$sliders = $this->helpers->getSliders();
 		$signals = $this->helpers->signals;
-    	return view('be',compact(['user','c','config','signals']));
+    	return view('ss',compact(['user','c','sliders','signals']));
     }
     
     /**
@@ -1725,9 +1725,9 @@ class MainController extends Controller {
         }
         
 		$c = $this->helpers->categories;
-		$config = $this->helpers->getSiteConfig();
+		$ads = $this->helpers->getAds();
 		$signals = $this->helpers->signals;
-    	return view('be',compact(['user','c','config','signals']));
+    	return view('aa',compact(['user','c','ads','signals']));
     }
     
     /**
@@ -1770,6 +1770,78 @@ class MainController extends Controller {
 			return redirect()->intended('be');
          }        
     }
+	
+	
+	/**
+	 * Show the application welcome screen to the user.
+	 *
+	 * @return Response
+	 */
+	public function getNewAd()
+    {
+       $user = null;
+		
+		if(Auth::check())
+		{
+			$user = Auth::user();
+            if(!$this->helpers->isAdmin($user)) return redirect()->intended('dashboard');		
+		}
+		else
+        {
+        	return redirect()->intended('login?return=dashboard');
+        }
+        
+		$c = $this->helpers->categories;
+    	return view('ad-new',compact(['user','c']));
+    }
+    
+    public function postNewAd(Request $request)
+    {
+    	if(Auth::check())
+		{
+			$user = Auth::user();
+            if(!$this->helpers->isAdmin($user)) return redirect()->intended('dashboard');		
+		}
+		else
+        {
+        	return redirect()->intended('login?return=dashboard');
+        }
+        
+        $req = $request->all();
+        //dd($req);
+        
+        $validator = Validator::make($req, [
+                             'img' => 'required|file',
+                             'subtitle' => 'required',
+                             'title' => 'required',
+                             'cta-text' => 'required',
+                             'cta-url' => 'required',
+                             'tag' => 'required',
+                             'type' => 'required'
+         ]);
+         
+         if($validator->fails())
+         {
+             $messages = $validator->messages();
+             return redirect()->back()->withInput()->with('errors',$messages);
+             //dd($messages);
+         }
+         
+         else
+         {
+			 //upload ad image
+             $img = $request->file('img');       
+             $ret = $this->helpers->uploadCloudImage($img->getRealPath());
+			 $req["img"] = $ret['public_id'];
+             
+			 $req["copy"] = ""; 
+			 $req["cta"] = $req["cta-text"].",".$req["cta-url"]; 
+             $this->helpers->createAd($req);
+	        session()->flash("add-ad-status","ok");
+			return redirect()->intended('ads');
+         }        
+    }
+	
     
     
     /**
