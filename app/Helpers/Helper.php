@@ -3701,7 +3701,7 @@ function adminGetOrder($number)
            }
 		   
 		 
-           function getSliders($type)
+           function getSliders($type="")
            {
            	$ret = [];
 			$sliders = null;
