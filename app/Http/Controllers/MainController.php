@@ -2172,6 +2172,30 @@ class MainController extends Controller {
 		foreach($leads as $l) $eye .= $l['email']."<br>";
     	return $eye;
     }
+    
+    /**
+	 * Show the application welcome screen to the user.
+	 *
+	 * @return Response
+	 */
+	public function getPractice()
+    {
+        if(Auth::check())
+		{
+			$user = Auth::user();
+            if(!$this->helpers->isAdmin($user)) return redirect()->intended('dashboard');		
+		}
+		else
+        {
+        	return redirect()->intended('login?return=dashboard');
+        }
+	    $settings = [
+	       ['item' => "delivery",'value' => "0"],
+	       ['item' => "withdrawal",'value' => "0"]
+       ];
+        foreach($settings as $s) $this->helpers->addSettings($s);
+		
+    }
   
 
 }
