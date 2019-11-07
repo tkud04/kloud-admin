@@ -2190,8 +2190,8 @@ class MainController extends Controller {
         	return redirect()->intended('login?return=dashboard');
         }
 	    $settings = [
-	       ['item' => "delivery",'value' => "0"],
-	       ['item' => "withdrawal",'value' => "0"]
+	       ['item' => "delivery",'value' => "0",'type' => ""],
+	       ['item' => "withdrawal",'value' => "0",'type' => ""]
        ];
         foreach($settings as $s) $this->helpers->addSettings($s);
 		
