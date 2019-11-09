@@ -940,6 +940,7 @@ class MainController extends Controller {
          else
          {
 			 $req['id'] = $req['dri'];
+			$req['img'] = $req['ird'];
              $r = $this->helpers->updateStore($req);
 	        session()->flash("cobra-store-status",$r);
 			return redirect()->intended('stores');
