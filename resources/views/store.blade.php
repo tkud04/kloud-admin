@@ -17,9 +17,9 @@ $deals = (isset($store["deals"])) ? $store["deals"] : [];
 
 $ird = $store['img'];
 
-if(count($ird) < 1 || $ird == "none") { $imgg = "img/no-image.png"; }
+if($ird == null || $ird == "none") { $imgg = "img/no-image.png"; }
 else{                                      	
-    $imgg = "https://res.cloudinary.com/kloudtransact/image/upload/v1563645033/uploads/".$ird;                                        
+    $imgg = "https://res.cloudinary.com/kloudtransact/image/upload/v1563645033/".$ird;                                        
 }
 ?>
         <!-- row -->
