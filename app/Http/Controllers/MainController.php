@@ -1464,7 +1464,7 @@ class MainController extends Controller {
          	#$req["user_id"] = $user->id; 
              $ret = $this->helpers->updateComment($req);
 	        session()->flash("cobra-comment-status",$ret);
-			return redirect()->intended('comments');
+			return redirect()->intended('rc');
          }        
     }
     
