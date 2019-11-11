@@ -3,7 +3,33 @@
 @section('title',"View Deal")
 
 @section('content')
-
+ <?php
+                                      $images = $deal['images'];
+                                      $imggs = [];
+                                      shuffle($images);
+                         
+                                      if(count($images) < 1) { $imggs = ["img/no-image.png"]; }
+                                      else{
+                                      	$ird = $images[0]['url'];
+										if($ird == "none")
+										{
+											$imggs = ["img/no-image.png"];
+										}
+										else
+										{
+                                      	  for($x = 0; $x < count($images); $x++)
+										  {
+                                      	   $jara = "";
+                                           if($x > 0) $jara = "-".($x + 1);
+                                      	   $imgg = "https://res.cloudinary.com/kloudtransact/image/upload/v1563645033/".$images[$x]['url'];
+                                           array_push($imggs,$imgg); 
+                                          }
+										}
+                                      } 
+                                      
+                                      
+                                     
+                                    ?>
         <!-- row -->
         <div class="row tm-content-row">
           <div class="tm-block-col tm-col-avatar">
@@ -11,7 +37,7 @@
               <h2 class="tm-block-title">Images</h2>
               <div class="tm-avatar-container">
                 <img
-                  src="img/lgg.png"
+                  src="{{$imggs[0]}}"
                   alt="{{$deal['name']}}"
                   class="tm-avatar img-fluid mb-4"
                 />
