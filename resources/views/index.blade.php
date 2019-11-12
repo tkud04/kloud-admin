@@ -28,6 +28,7 @@ $totalUsers = $adminStats['totalUsers'];
                     <div class="tm-bg-primary-dark tm-block">
 					
 							<h2 class="tm-block-title">At A Glance</h2>
+						<div class="table-responsive">
                         <table class="table">
                             <thead>
                                 <tr>
@@ -60,6 +61,7 @@ $totalUsers = $adminStats['totalUsers'];
                                                     
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 </div>
 			</div>
