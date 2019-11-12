@@ -26,78 +26,40 @@ $totalUsers = $adminStats['totalUsers'];
             <div class="row tm-content-row">
 			   <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 tm-block-col">
                     <div class="tm-bg-primary-dark tm-block">
-					   <div class="row">
-						 <div class="col-sm-12 col-md-12 col-lg-3 col-xl-3">
-						   <div class="card card-stats">
-                            <div class="card-header card-header-warning card-header-icon">
-                              <div class="card-icon">
-                                <i class="far fa-money"></i>
-                              </div>
-                              <p class="card-category">Deals</p>
-                              <h3 class="card-title">{{$totalDeals}} </h3>
-                            </div>
-                            <div class="card-footer">
-                              <div class="stats">
-                                <i class="far fa-danger text-danger"></i>
-                                <a href="{{url('deals')}}">View all deals</a>
-                              </div>
-                            </div>
-                          </div>
-						 </div>
-						 <div class="col-sm-12 col-md-12 col-lg-3 col-xl-3">
-						   <div class="card card-stats">
-                            <div class="card-header card-header-warning card-header-icon">
-                              <div class="card-icon">
-                                <i class="far fa-money"></i>
-                              </div>
-                              <p class="card-category">Orders</p>
-                              <h3 class="card-title">{{$totalOrdersPending}}/{{$totalOrders}} <small>PENDING</small></h3>
-                            </div>
-                            <div class="card-footer">
-                              <div class="stats">
-                                <i class="far fa-danger text-danger"></i>
-                                <a href="{{url('orders')}}">View all orders</a>
-                              </div>
-                            </div>
-                          </div>
-						 </div>
-						 <div class="col-sm-12 col-md-12 col-lg-3 col-xl-3">
-						   <div class="card card-stats">
-                            <div class="card-header card-header-warning card-header-icon">
-                              <div class="card-icon">
-                                <i class="far fa-money"></i>
-                              </div>
-                              <p class="card-category">Users</p>
-                              <h3 class="card-title">{{$totalUsersActive}}/{{$totalUsers}} <small>ACTIVE</small></h3>
-                            </div>
-                            <div class="card-footer">
-                              <div class="stats">
-                                <i class="far fa-danger text-danger"></i>
-                                <a href="{{url('users')}}">View all users</a>
-                              </div>
-                            </div>
-                          </div>
-						 </div>
-						 <div class="col-sm-12 col-md-12 col-lg-3 col-xl-3">
-						   <div class="card card-stats">
-                            <div class="card-header card-header-warning card-header-icon">
-                              <div class="card-icon">
-                                <i class="far fa-money"></i>
-                              </div>
-                              <p class="card-category">Stores</p>
-                              <h3 class="card-title">{{$totalStores}}</h3>
-							   <p class="card-category"><span class="text-warning"><i class="fa fa-shopping-bag"></i>Total Revenue: &#8358;{{$totalStoreSales}} </span></p>
-                            </div>
-                            <div class="card-footer">
-                              <div class="stats">
-                                <i class="far fa-danger text-danger"></i>
-                                <a href="{{url('users')}}">View all users</a>
-                              </div>
-                            </div>
-                          </div>
-						 </div>
-					   </div>
-                        
+					
+							<h2 class="tm-block-title">At A Glance</h2>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">DESCRIPTION</th>
+                                    <th scope="col">TOTAL</th>
+                                    <th scope="col">ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row"><b>DEALS</b></th>
+                                    <td><b>{{$totalDeals}} </b></td>
+                                    <td><a href="{{url('deals')}}">View all deals</a></td>
+                                </tr>
+								<tr>
+                                    <th scope="row"><b>ORDERS</b></th>
+                                    <td><b>{{$totalOrdersPending}}/{{$totalOrders}} <small>PENDING</small></b></td>
+                                    <td><a href="{{url('orders')}}">View all orders</a></td>
+                                </tr>
+								<tr>
+                                    <th scope="row"><b>USERS</b></th>
+                                    <td>{{$totalUsersActive}}/{{$totalUsers}} <small>ACTIVE</small></td>
+                                    <td><a href="{{url('users')}}">View all users</a></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><b>STORES</b></th>
+                                    <td>{{$totalStores}} | <span class="text-warning"><i class="fa fa-shopping-bag"></i>Total Revenue: &#8358;{{$totalStoreSales}} </span></td>
+                                    <td><a href="{{url('stores')}}">View all stores</a></td>
+                                </tr>
+                                                    
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 			</div>
