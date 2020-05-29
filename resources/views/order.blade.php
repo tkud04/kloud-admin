@@ -18,43 +18,41 @@
 				 
 				<div class="form-group col-lg-6">
                   <label for="phone">Order #</label>
-                  <input
-                    id="phone"
-					value="{{$order['number']}}"
-                    type="text"
-					readonly
-                    class="form-control validate"
-                  />
+                  <p class="form-control-plaintext text-white">{{$order['number']}}</p>
                 </div>
 				<div class="form-group col-lg-6">
                   <label for="phone">User</label>
-                  <input
-                    id="phone"
-					value="{{$order['email']}}"
-                    type="text"
-					readonly
-                    class="form-control validate"
-                  />
+                   <p class="form-control-plaintext text-white">{{$order['email']}}</p>
+                </div>
+				<div class="form-group col-lg-12">
+                  <label for="phone">Items</label>
+                  <ul class="form-control-plaintext text-white">
+				   <?php
+				    $subtotal = 0;
+					
+				    foreach($order['details'] as $od)
+					{
+					  $deal = $od['deal']; $store = $deal['store'];
+					  $amount = $deal['data']['amount'];
+					  $qty = $od['qty'];
+					  $subtotal += ($amount * $qty);
+				   ?>
+				    <li>
+					  <p>{{$deal['name']}} (<b>{{$deal['sku']}}</b>) x{{$qty}} | size: {{$od['size']}}, color: {{$od['color']}}</p>
+					</li>
+				   <?php
+				    }
+				   ?>
+				   <li>SUB-TOTAL: <b>&#8358;{{number_format($subtotal,2)}}</b></li>
+				  </ul>
                 </div>
 				<div class="form-group col-lg-6">
                   <label for="phone">Status</label>
-                  <input
-                    id="phone"
-					value="{{$order['status']}}"
-                    type="text"
-					readonly
-                    class="form-control validate"
-                  />
+                  <p class="form-control-plaintext text-white">{{$order['status']}}</p>
                 </div>
 				<div class="form-group col-lg-6">
                   <label for="phone">Type</label>
-                  <input
-                    id="phone"
-					value="Sale"
-                    type="text"
-					required
-                    class="form-control validate"
-                  />
+                   <p class="form-control-plaintext text-white">Sale</p>
                 </div>
 								
 

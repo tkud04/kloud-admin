@@ -1012,7 +1012,7 @@ class MainController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function getInvoice()
+	public function getInvoice(Request $request)
     {
        $user = null;
 		
@@ -1027,8 +1027,42 @@ class MainController extends Controller {
         }
         
 		$c = $this->helpers->categories;
-		$invoice = null; 
-    	return view('invoice',compact(['user','c','invoice']));
+		$req = $request->all();
+	    //dd($secure);
+		$validator = Validator::make($req, [
+                             'on' => 'required'
+                   ]);
+         
+                 if($validator->fails())
+                  {
+					  return redirect()->intended('orders');     
+                  }
+                
+                 else
+                 {
+					 $order = $this->helpers->adminGetOrder($req['on']);
+					 $delivery = $this->helpers->getDeliveryFee();
+					 $signals = $this->helpers->signals;
+					 
+					 if(is_null($order) || $order == [])
+					 {
+						return redirect()->intended('orders'); 
+					 }
+				     else
+					 {
+						// $totals = $this->helpers->getOrderTotals($order['items']);
+						  #dd($order);
+						 if(isset($req['print']) && $req['print'] == "1")
+						 {
+						   return view("print-receipt", compact(['user','c','order','delivery','signals'])); 
+						 }
+						 else
+						 {
+						    return view("receipt", compact(['user','c','order','delivery','signals'])); 
+						 }
+						  
+					 }					 
+                 }
     }
 
 
@@ -1054,6 +1088,7 @@ class MainController extends Controller {
 		$c = $this->helpers->categories;
 		$signals = $this->helpers->signals;
 		$orders = $this->helpers->adminGetOrders(); 
+		#dd($orders);
     	return view('orders',compact(['user','c','signals','orders']));
     }
     
@@ -1088,6 +1123,7 @@ class MainController extends Controller {
             }
 		$c = $this->helpers->categories;
 		$order = $this->helpers->adminGetOrder($req['on']); 
+		#dd($order);
     	return view('order',compact(['user','c','order']));
     }
     

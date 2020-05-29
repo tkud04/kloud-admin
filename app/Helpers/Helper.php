@@ -946,6 +946,7 @@ $subject = $data['subject'];
                	$ret['images'] = $this->getDealImages($d->sku);               
                    $ret['data'] = $this->getDealData($d->sku); 
                    $ret['auction'] = $this->getAuction($d->id); 
+                   $ret['store'] = $this->getStore($d->user_id); 
                	$ret['name'] = $d->name; 
                	$ret['sku'] = $d->sku; 
                    $u = User::where('id',$d->user_id)->first();
@@ -1916,15 +1917,8 @@ $subject = $data['subject'];
                {
                	foreach($orders as $o)
                    {
-                   	$temp = [];
-                   	$temp['id'] = $o->id; 
-                   	$temp['number'] = $o->number; 
-                       $u = User::where('id',$o->user_id)->first();
-                   	$temp['email'] = ($u != null) ? $u->email : "Unknown"; 
-                   	$temp['total'] = $o->total; 
-                   	$temp['status'] = $o->status; 
-                   	$temp['date'] = $o->created_at->format("jS F, Y"); 
-                       array_push($ret, $temp); 
+                   	 $temp = $this->adminGetOrder($o->number); 
+                     array_push($ret, $temp); 
                    }
                }                                 
                                                       
@@ -1934,18 +1928,26 @@ $subject = $data['subject'];
 function adminGetOrder($number)
            {
            	$ret = [];
-           	$order = Orders::where('number',$number)->first();
+           	$o = Orders::where('number',$number)->first();
  
-              if($order != null)
+              if($o != null)
                {
                    	$temp = [];
-                   	$temp['id'] = $order->id; 
-                   	$temp['number'] = $order->number; 
-                       $u = User::where('id',$order->user_id)->first();
+                   	$temp['id'] = $o->id; 
+                   	$temp['number'] = $o->number; 
+                    $u = User::where('id',$o->user_id)->first();
+					$buyer = [
+					  'fname' => $u->fname,
+					  'lname' => $u->lname,
+					  'email' => $u->email,
+					  'phone' => $u->phone,
+					];
                    	$temp['email'] = ($u != null) ? $u->email : "Unknown"; 
-                   	$temp['total'] = $order->total; 
-                   	$temp['status'] = $order->status; 
-					$temp['date'] = $order->created_at->format("jS F, Y"); 
+                   	$temp['buyer'] = $buyer; 
+					 $temp['details'] = $this->getOrderDetails($u->id,$o->id);
+                   	$temp['total'] = $o->total; 
+                   	$temp['status'] = $o->status;					
+					 $temp['date'] = $o->created_at->format("jS F, Y");
                        $ret = $temp; 
                    
                }                                 
@@ -2379,14 +2381,7 @@ function adminGetOrder($number)
                {
                	foreach($orders as $o)
                    {
-                   	$temp = [];
-                   	$temp['id'] = $o->id; 
-                   	$temp['number'] = $o->number; 
-                       $temp['status'] = $o->status; 
-                       $temp['details'] = $this->getOrderDetails($user->id,$o->id); 
-                       $temp['sd'] = $o->sd; 
-                       $temp['amount'] = $o->total; 
-					   $temp['date'] = $o->created_at->format("jS F, Y"); 
+                   	  $temp = $this->getOrder($o->number); 
                        array_push($ret, $temp); 
                    }
                }       
