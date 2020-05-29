@@ -104,11 +104,14 @@
                     class="form-control validate"
 				  >
 				  <?php
-				     $options = ['first' => "Displays first when home page loads",'last' => "Displays last when home page loads",'random' => "Displays randomly"];
+				     $options = ['random' => "Displays randomly",'first' => "Displays first when home page loads",'last' => "Displays last when home page loads"];
 				  ?>
 				  <option value="none">Where do you want the ads to be displayed?</option>
 				  @foreach($options as $key => $value)
-				  <option value="{{$key}}">{{$value}}</option>
+				  <?php
+				    $ss = $key == "random" ? "selected='selected'" : "";
+				  ?>
+				  <option value="{{$key}}" {{$ss}}>{{$value}}</option>
 				  @endforeach
                   </select>
                 </div>
