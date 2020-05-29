@@ -1860,7 +1860,7 @@ $subject = $data['subject'];
            {
            	$ret = [];
            	$deals = Deals::orderBy('created_at', 'desc')->get();
- 
+            #dd($deals);
               if($deals != null)
                {
                	foreach($deals as $d)
@@ -1875,6 +1875,7 @@ $subject = $data['subject'];
                    	$temp['data'] = $this->getDealData($d->sku); 
                    	$temp['images'] = $this->getDealImages($d->sku);
                        $temp['rating'] = $this->getRating($d);
+                       $temp['store'] = $this->getStore($d->user_id);
                        array_push($ret, $temp); 
                    }
                }                                 
@@ -2934,8 +2935,9 @@ function adminGetOrder($number)
            {
            	$ret = [];
                $s = Stores::where('flink', $flink)
-                              ->orWhere('id', $flink)->first();     
- 
+                              ->orWhere('id', $flink)     
+                              ->orWhere('user_id', $flink)->first();     
+               #dd($s);
               if($s != null)
                {
                    	$temp = [];

@@ -22,8 +22,11 @@
                             </thead>
                             <tbody>
 							  @foreach($deals as $d)
+							  <?php
+							  $store = $d['store'];
+							  ?>
                                 <tr>
-                                    <th scope="row"><b>{{$d['sku']}}</b></th>
+                                    <th scope="row"><b>{{$d['sku']}}</b><br><b>({{$store['name']}})</b></th>
                                     
                                     <td><b>{{$d['name']}}</b></td>
                                     <td><b>

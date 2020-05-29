@@ -27,10 +27,11 @@
                                @foreach($orders as $o)
 				         <?php
                           $orderURL = url('order').'?on='.$o['number']; 
+						  $store = $o['store'];
                          ?>
                                 <tr>
                                     
-                                    <td><b> {{$o['number']}}</b></td>
+                                    <td><b> {{$o['number']}}</b><br><b>({{$store['name']}})</b></td>
                                     <td><b> {{$o['email']}}</b></td>
                                     <td><b>&#8358;{{number_format($o['total'],2)}}</b></td>
                                     <td><b>{{$o['date']}}</b></td>

@@ -171,6 +171,7 @@ class MainController extends Controller {
 		$c = $this->helpers->categories;
 		$signals = $this->helpers->signals;
 		$deals = $this->helpers->adminGetDeals();
+		#dd($deals);
     	return view('deals',compact(['user','c','signals','deals']));
     }
     
