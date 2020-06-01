@@ -1866,17 +1866,7 @@ $subject = $data['subject'];
                {
                	foreach($deals as $d)
                    {
-                   	$temp = [];
-                   	$temp['id'] = $d->id; 
-                   	$temp['name'] = $d->name; 
-                   	$temp['sku'] = $d->sku; 
-                   	$temp['type'] = $d->type; 
-                       $temp['category'] = $d->category; 
-                       $temp['status'] = $d->status; 
-                   	$temp['data'] = $this->getDealData($d->sku); 
-                   	$temp['images'] = $this->getDealImages($d->sku);
-                       $temp['rating'] = $this->getRating($d);
-                       $temp['store'] = $this->getStore($d->user_id);
+                   	$temp = $this->adminGetDeal($d->sku);
                        array_push($ret, $temp); 
                    }
                }                                 
@@ -1897,11 +1887,13 @@ $subject = $data['subject'];
                    	$temp['name'] = $d->name; 
                    	$temp['sku'] = $d->sku; 
                    	$temp['type'] = $d->type; 
+                   	$temp['date'] = $d->created_at->format("jS F, Y"); 
                        $temp['category'] = $d->category; 
                        $temp['status'] = $d->status; 
                    	$temp['data'] = $this->getDealData($d->sku); 
                    	$temp['images'] = $this->getDealImages($d->sku);
                        $temp['rating'] = $this->getRating($d);
+					   $temp['store'] = $this->getStore($d->user_id);
                        $ret = $temp;                   
                }                                 
                      

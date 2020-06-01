@@ -14,6 +14,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">SKU</th>
+                                    <th scope="col">DATE CREATED</th>
                                     <th scope="col">NAME</th>
                                     <th scope="col">RATING</th>
                                     <th scope="col">STATUS</th>                                    
@@ -28,6 +29,7 @@
                                 <tr>
                                     <th scope="row"><b>{{$d['sku']}}</b><br><b>({{$store['name']}})</b></th>
                                     
+                                    <td><b>{{$d['date']}}</b></td>
                                     <td><b>{{$d['name']}}</b></td>
                                     <td><b>
 									@for($u = 0; $u < $d['rating']; $u++)
