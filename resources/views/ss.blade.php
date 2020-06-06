@@ -43,6 +43,7 @@
 										 $options = ['first' => "Displays first when home page loads",'last' => "Displays last when home page loads",'random' => "Displays randomly"];
 									  
                           $deleteURL = url("delete-slider")."?xf=".$s['id'];
+                          $editURL = url("slider")."?xf=".$s['id'];
                          ?>
                                 <tr>
                                     
@@ -56,6 +57,7 @@
                                     <td><b>{{$s['copy']}}</b></td>
                                     <td><b>{{$options[$s['type']]}}</b></td>
                                     <td>
+									<a href="{{$editURL}}" class="tm-product-delete-link"><i class="far fa-eye tm-product-delete-icon"></i></a>
 									<a href="{{$deleteURL}}" class="tm-product-delete-link"><i class="far fa-trash-alt tm-product-delete-icon"></i></a>
 									</td>
                                 </tr>

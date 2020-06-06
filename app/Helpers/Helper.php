@@ -128,6 +128,7 @@ class Helper implements HelperContract
                      "add-ad-status" => "Ad created!",
                      "delete-ad-status" => "Ad deleted .",
                      "delete-slider-status" => "Slider deleted .",
+                     "update-slider-status" => "Slider updated .",
                      "add-slider-status" => "Slider created!",
                      "rate-deal-status" => "Thank you for your input!",
                      "no-bid-status" => "Insufficient funds to place bid. Please make a deposit and try again.",

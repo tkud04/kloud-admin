@@ -1811,7 +1811,7 @@ class MainController extends Controller {
         	$s = $this->helpers->getSlider($req['xf']);
             if(count($s) > 0)
             {
-            	dd($s);
+            	#dd($s);
             	$c = $this->helpers->categories;
             	return view('slider',compact(['user','c','s']));
             }
@@ -1836,7 +1836,7 @@ class MainController extends Controller {
         }
         
         $req = $request->all();
-        dd($req);
+        #dd($req);
         
         $validator = Validator::make($req, [
                              'img' => 'file',
@@ -1860,8 +1860,8 @@ class MainController extends Controller {
 			 //upload ad image
              $img = $request->file('img');
              $rimg = $img;
-             
-             if($img != "null")
+             #dd($img);
+             if($img != null)
              {
              	$ret = $this->helpers->uploadCloudImage($img->getRealPath());
 			     $rimg = $ret['public_id'];
