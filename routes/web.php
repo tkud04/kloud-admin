@@ -58,6 +58,8 @@ Route::get('ad-new', 'MainController@getNewAd');
 Route::post('ad-new', 'MainController@postNewAd');
 Route::get('slider-new', 'MainController@getNewSlider');
 Route::post('slider-new', 'MainController@postNewSlider');
+Route::get('slider', 'MainController@getSlider');
+Route::post('slider', 'MainController@postSlider');
 Route::get('delete-ad', 'MainController@getDeleteAd');
 Route::get('delete-slider', 'MainController@getDeleteSlider');
 
