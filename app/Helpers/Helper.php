@@ -3782,9 +3782,14 @@ function adminGetOrder($number)
                                                       'cta_2' => $data['cta_2'],                                                     
                                                       'tag' => $data['tag'],
                                                       'copy' => $data['copy'],
-                                                      'img' => $data['img'],
                                                       'type' => $data['type']
                                                       ]);
+													  
+		           if(isset($data['img']) && $data['img'] != null)
+				   {
+					   $s->update(['img' => $data['img']]);
+				   }
+				   
 				   return "ok";
                }        
            }
