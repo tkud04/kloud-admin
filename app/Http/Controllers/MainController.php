@@ -1777,6 +1777,111 @@ class MainController extends Controller {
 			return redirect()->intended('ss');
          }        
     }
+    
+    * Show the application welcome screen to the user.
+	 *
+	 * @return Response
+	 */
+	public function getSlider(Request $request)
+    {
+       $user = null;
+		$req = $request->all();
+		
+		if(Auth::check())
+		{
+			$user = Auth::user();
+            if(!$this->helpers->isAdmin($user)) return redirect()->intended('dashboard');		
+		}
+		else
+        {
+        	return redirect()->intended('login?return=dashboard');
+        }
+        
+        $validator = Validator::make($req, [
+                             'xf' => 'required'                           
+         ]);
+         
+         if($validator->fails())
+         {
+             return redirect()->intended('ss');
+             //dd($messages);
+         }
+         else
+        {
+        	$s = $this->helpers->getSlider($req['xf']);
+            if(count($s) > 0)
+            {
+            	dd($s);
+            	$c = $this->helpers->categories;
+            	return view('slider',compact(['user','c','s']));
+            }
+            else
+            {
+            	return redirect()->intended('ss');
+            }
+        }
+    }
+    
+    
+    public function postSlider(Request $request)
+    {
+    	if(Auth::check())
+		{
+			$user = Auth::user();
+            if(!$this->helpers->isAdmin($user)) return redirect()->intended('dashboard');		
+		}
+		else
+        {
+        	return redirect()->intended('login?return=dashboard');
+        }
+        
+        $req = $request->all();
+        dd($req);
+        
+        $validator = Validator::make($req, [
+                             'img' => 'file',
+                             'xf' => 'required',
+                             'subtitle' => 'required',
+                             'title' => 'required',
+                             'cta-1-text' => 'required',
+                             'cta-1-url' => 'required',
+                             'type' => 'required'
+         ]);
+         
+         if($validator->fails())
+         {
+             $messages = $validator->messages();
+             return redirect()->back()->withInput()->with('errors',$messages);
+             //dd($messages);
+         }
+         
+         else
+         {
+			 //upload ad image
+             $img = $request->file('img');
+             $rimg = $img;
+             
+             if($img != "null")
+             {
+             	$ret = $this->helpers->uploadCloudImage($img->getRealPath());
+			     $rimg = $ret['public_id'];
+             }       
+             $req["img"] = $rimg;
+             
+             $copy = "";
+             if(isset($req["copy"])) $copy = $req["copy"]; 
+			 $req["copy"] = $copy; 
+			 $tag = "";
+			 if(isset($req["tag"])) $tag = $req["tag"]; 
+			else $req["tag"] = $tag;
+			 $req["cta_1"] = $req["cta-1-text"].",".$req["cta-1-url"]; 
+			 $req["cta_2"] = "None,#"; 
+			if(isset($req["cta-2-text"]) && isset($req["cta-2-text"])) $req["cta_2"] = $req["cta-2-text"].",".$req["cta-2-url"]; 
+             $this->helpers->updateSlider($req);
+	        session()->flash("update-slider-status","ok");
+			return redirect()->intended('ss');
+         }        
+    }
 	
 	/**
 	 * Show the application welcome screen to the user.
