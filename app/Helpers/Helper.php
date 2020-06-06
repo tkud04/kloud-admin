@@ -3691,7 +3691,27 @@ function adminGetOrder($number)
                 return $ret;
            }
 		   
-		 
+		   function getSlider($id)
+           {
+           	$temp = [];
+           	$s = Sliders::where('id',$id)->first();
+               
+               if($s != null)
+               {
+               	$temp['id'] = $s->id;  
+                      $temp['subtitle'] = $s->subtitle;  
+                      $temp['title'] = $s->title;  
+                      $temp['cta_1'] = $s->cta_1;  
+                      $temp['cta_2'] = $s->cta_2;  
+                      $temp['tag'] = $s->tag;  
+                      $temp['copy'] = $s->copy;  
+                      $temp['img'] = $s->img;  
+                      $temp['type'] = $s->type;  
+                      $temp['date'] = $s->created_at->format("jS F, Y h:i A"); 
+              }
+              return $temp;
+          }
+		
            function getSliders($type="")
            {
            	$ret = [];
@@ -3711,17 +3731,7 @@ function adminGetOrder($number)
                 {
                    foreach($sliders as $s)
                    {
-                   	  $temp = [];
-                      $temp['id'] = $s->id;  
-                      $temp['subtitle'] = $s->subtitle;  
-                      $temp['title'] = $s->title;  
-                      $temp['cta_1'] = $s->cta_1;  
-                      $temp['cta_2'] = $s->cta_2;  
-                      $temp['tag'] = $s->tag;  
-                      $temp['copy'] = $s->copy;  
-                      $temp['img'] = $s->img;  
-                      $temp['type'] = $s->type;  
-                      $temp['date'] = $s->created_at->format("jS F, Y h:i A"); 
+                   	  $temp = $this->getSlider($s->id);            
                       array_push($ret, $temp); 
                    }
                 }       
@@ -3757,6 +3767,25 @@ function adminGetOrder($number)
                }                          
                                                       
                 return $ret;
+           }
+           
+           function updateSlider($data)
+           {
+           	$s = Sliders::where('id',$data['xf'])->first();
+ 
+              if($s != null)
+               {
+				    $s->update(['subtitle' => $data['subtitle'],                                                                                                          
+                                                      'title' => $data['title'],
+                                                      'cta_1' => $data['cta_1'],                                                     
+                                                      'cta_2' => $data['cta_2'],                                                     
+                                                      'tag' => $data['tag'],
+                                                      'copy' => $data['copy'],
+                                                      'img' => $data['img'],
+                                                      'type' => $data['type']
+                                                      ]);
+				   return "ok";
+               }        
            }
            
            
